@@ -143,7 +143,8 @@ function Get-AdvancedSystemInformation {
                 State = $product.productState
             }
         }
-    }
+    } catch {
+	}
     
     return $systemInfo
 }
@@ -196,7 +197,8 @@ function Get-ComprehensiveSecurityAssessment {
                 LastScan = $defender.LastQuickScan
             }
         }
-    }
+    } catch {
+	}
     
     return $assessment
 }
@@ -732,7 +734,7 @@ try {
     $hostName = hostname
     $desktopPath = [Environment]::GetFolderPath("Desktop")
     $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
-    $htmlFilePath = Join-Path $desktopPath "ISO-27001-2022-Report-$hostName-$timestamp.html"
+    $htmlFilePath = Join-Path $desktopPath "ISO-27001-Report-$hostName.html"
     $htmlContent | Out-File -FilePath $htmlFilePath -Encoding UTF8
     
     # Display summary
