@@ -2,6 +2,7 @@
 # and seemlesy continue the next scripts when using Runbooks. 
 # ServerEngine initiates a waiting sequence and after
 # successfull reconnection the cycle ends
+# IMPORTANT: Requires a script step after reboot
 #-------------------------------------------------
 
 # Use this specific line for successfully reboot cycles
