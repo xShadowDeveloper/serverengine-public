@@ -1,24 +1,7 @@
-# Check Services and gather information
+# Restart Service
 #-----------------------------------------------------------------
 
-# Modify as needed
-$CriticalServices = @(
-    "Dnscache",
-    "NTDS",
-    "Netlogon",
-    "LanmanWorkstation",
-    "LanmanServer",
-    "RpcSs",
-    "W32Time",
-    "NlaSvc",
-    "WinDefend"
-    )  
 
-# Initialize $store as array
-$store = @()
-
-foreach ($ServiceName in $CriticalServices) 
-{	
 	$Service = Get-Service -Name $ServiceName -ErrorAction SilentlyContinue
 	if ($null -eq $Service)
 	{
@@ -28,11 +11,30 @@ foreach ($ServiceName in $CriticalServices)
 
 	if ($Service.Status -ne 'Running') 
 	{
-		Write-Host "<WRITE-LOG = ""*Service: $ServiceName is down! Save to store...*"">"
-		# Add service if down
-		$store += $ServiceName
+		Write-Host "<WRITE-LOG = ""*Service: $ServiceName is down! Starting...*"">"
+
+		$Service = Get-Service -Name $ServiceName -ErrorAction SilentlyContinue
+		Start-Service -Name $ServiceName
+		Start-Sleep 2
+		$Service.Refresh()
+
+		if ($Service.Status -eq 'Running') {
+			Write-Host "<WRITE-LOG = ""*Service: $ServiceName started successfully.*"">"
+		} else {
+			Write-Host "<WRITE-LOG = ""*Service: $ServiceName failed to start.*"">"
+		}
 	}
 	else {
-		Write-Host "<WRITE-LOG = ""*Service: $ServiceName is running.*"">"
+		$Service = Get-Service -Name $ServiceName -ErrorAction SilentlyContinue
+		Restart-Service -Name $ServiceName -Force
+		Start-Sleep 2
+		$Service.Refresh()
+
+		if ($Service.Status -eq 'Running') {
+			Write-Host "<WRITE-LOG = ""*Service: $ServiceName restarted successfully.*"">"
+		} else {
+			Write-Host "<WRITE-LOG = ""*Service: $ServiceName failed to start.*"">"
+		}
+
 	}	
-}
+
