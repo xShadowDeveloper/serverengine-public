@@ -1,22 +1,25 @@
 # To access and load stored data from the script before
 # use the $store variable like this:
 #--------------------------------------------------
+function Write-Log {
+    param($Message)
+    Write-Host "<WRITE-LOG = `"*$Message*`">"
+}
 
 # Example 1 (Load Text)
 $example1 = $store
 
-# Example 2 (Save Variable)
+# Example 2 (Load Variable)
 $example2 = $store
 
-# Example 3 (Save Numeric Values)
+# Example 3 (Load Numeric Values)
 $example3 = $store
 
-# Example 4 (Save Mixed Data)
+# Example 4 (Load String List)
 
-$Name = 	$store[0]
-$Age = 	$store[1]
-$Title =	$store[2]
-$Salary =	$store[3]
+$userList = @()
+$userList = $store -split ","
+Write-Log $userList
 
 #--------------------------------------------------
 # Only use one example at a time 
